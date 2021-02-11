@@ -2,11 +2,19 @@ import React from "react";
 import PostFeed from "../../components/PostFeed";
 import UserProfile from "../../components/UserProfile";
 import {getUserWithUsername, postToJSON} from "../../lib/firebase";
+import AuthCheck from "../../components/AuthCheck";
 
 export async function getServerSideProps({query}) {
   const {username} = query;
 
   const userDoc = await getUserWithUsername(username);
+
+  // If no user, short circuit to 404 page
+  if (!userDoc) {
+    return {
+      notFound: true,
+    };
+  }
 
   // JSON serializable data
   let user = null;
@@ -27,13 +35,15 @@ export async function getServerSideProps({query}) {
   };
 }
 
-export default function UserProfilePage({ user, posts }) {
+export default function UserProfilePage({user, posts}) {
   // @ts-ignore
 
   return (
     <main>
-      <UserProfile user={user}/>
-      <PostFeed posts={posts}/>
+      <AuthCheck>
+        <UserProfile user={user}/>
+        <PostFeed posts={posts}/>
+      </AuthCheck>
     </main>
   )
 }

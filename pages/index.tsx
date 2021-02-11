@@ -2,7 +2,8 @@ import PostFeed from '../components/PostFeed';
 import Loader from '../components/Loader';
 import {firestore, fromMillis, postToJSON} from '../lib/firebase';
 
-import {useState} from 'react';
+import React, {useState} from 'react';
+import Metatags from "../components/Metatags";
 
 // Max post to query per page
 const LIMIT = 1;
@@ -45,14 +46,21 @@ export default function Home(props) {
     setPosts(posts.concat(newPosts));
     setLoading(false);
 
-
+    if (newPosts.length < LIMIT) {
+      setPostsEnd(true);
+    }
   };
 
   return (
     <main>
-      <PostFeed posts={posts}/>
+      <Metatags title="Home Page" description="Get the latest posts on our site" />
+
+      <PostFeed posts={posts} />
+
       {!loading && !postsEnd && <button onClick={getMorePosts}>Load more</button>}
-      <Loader show={loading}/>
+
+      <Loader show={loading} />
+
       {postsEnd && 'You have reached the end!'}
     </main>
   );

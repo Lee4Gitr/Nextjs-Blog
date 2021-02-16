@@ -1,4 +1,4 @@
-import styles from '../../styles/Home.module.css';
+import styles from '../../styles/Admin.module.css';
 import AuthCheck from '../../components/AuthCheck';
 import PostFeed from '../../components/PostFeed';
 import { UserContext } from '../../lib/context';
@@ -54,11 +54,12 @@ function CreateNewPost() {
     const uid = auth.currentUser.uid;
     const ref = firestore.collection('users').doc(uid).collection('posts').doc(slug);
 
+    // Tip: give all fields a default value here
     const data = {
-      title: title,
-      slug: slug,
-      uid: uid,
-      username: username,
+      title,
+      slug,
+      uid,
+      username,
       published: false,
       content: '# hello world!',
       createdAt: serverTimestamp(),

@@ -1,7 +1,8 @@
 import Link from 'next/link';
+import IPost from "../Interfaces/IPost";
 
 interface PostProps {
-  posts: any,
+  posts: IPost[],
   admin?: boolean
 }
 
